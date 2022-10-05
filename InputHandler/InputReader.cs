@@ -9,23 +9,6 @@ namespace FancyBlackJack.InputHandler
 {
     public static class InputReader
     {
-        public static char ReadInput() {
-            return ReadText(new char[] { 'a', 'b', 'c', 'd' });
-        }
-
-        public static char ReadText(params char[] validInputs) {
-            while (true) {
-                char userInput = Console.ReadKey(true).KeyChar;
-
-                if (validInputs.Contains(userInput)) {
-                    return userInput;
-                }
-
-                CheckIfQuit(userInput);
-            }
-        }
-
-
         public static int ReadNumerical(int maxValue) {
             while (true) {
                 char userInput = Console.ReadKey(true).KeyChar;
@@ -39,21 +22,6 @@ namespace FancyBlackJack.InputHandler
                 CheckIfQuit(userInput);
             }
         }
-
-        //public static int ReadNumerical(int maxValue, out bool hasShiftModifier) {
-            //while (true) {
-            //    char userInput = Console.ReadKey(true).KeyChar;
-
-            //    if (int.TryParse(userInput.ToString(), out int inputResult)) {
-            //        if (inputResult > 0 && inputResult <= maxValue) {
-            //            return inputResult;
-            //        }
-            //    }
-
-            //    CheckIfQuit(userInput);
-            //}
-        //}
-
 
         public static void ModifierTest() {
             while (true) {

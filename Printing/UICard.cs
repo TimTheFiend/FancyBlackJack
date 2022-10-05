@@ -19,5 +19,16 @@ namespace FancyBlackJack.Printing
 
             UIHandler.Color = currentColor;
         }
+
+        public static void PrintCards(IEnumerable<Card> cards) {
+            var currentColor = UIHandler.Color;
+
+            foreach (Card card in cards) {
+                UIHandler.Color = card.GetColor;
+                Console.Write(card);
+            }
+
+            UIHandler.Color = currentColor;
+        }
     }
 }

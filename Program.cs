@@ -9,8 +9,9 @@ using FancyBlackJack.Printing;
 Console.WriteLine("Hello World");
 
 
-InputReader.ModifierTest();
+//InputReader.ModifierTest();
 
+List<string> test;
 
 
 return;

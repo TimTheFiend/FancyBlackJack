@@ -32,6 +32,22 @@ namespace FancyBlackJack.CardDeck
 
 
         /// <summary>
+        /// Returns the card's value as it's calculated in Black Jack. Aces default to full value.
+        /// </summary>
+        public int GetValue {
+            get {
+                // K | Q | J | 10
+                if (Value >= CardValue.TEN) return (int)CardValue.TEN;
+                // 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2
+                if (Value >= CardValue.TWO) return (int)Value;
+                
+                // Ace full value.
+                return _aceFullValue;
+            }
+        }
+
+
+        /// <summary>
         /// Gets the unicode character representing the card's <see cref="Suit"/>,
         /// </summary>
         private string GetSuitUnicode {
