@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FancyBlackJack.Game
 {
-    public static class BetManager
+    public class BetManager
     {
         private static readonly int[] bets = new int[] {
             10,
@@ -19,17 +19,24 @@ namespace FancyBlackJack.Game
         private static readonly int midBet = lowBet * 5;
         private static readonly int highBet = lowBet * 10;
 
+        private IInputReader inputReader;
+        //Mocks i Test. 
+        //Constructor-injection af afhængigheder(dependencies) i OOP
+        public BetManager(IInputReader inputReader) {
+            this.inputReader = inputReader;
+        }
 
         public static int CurrentBet { get; private set; } = 0;
             
-        public static void HandlePlayerBet(Player player) {
+        public void HandlePlayerBet(Player player) {
             CurrentBet = 0;
 #if DEBUG
             DebugPrintInstructions();
 #endif
 
             while (true) {
-                int userInput = InputReader.ReadPlayerBet(bets.Count(), out bool isRemovingBet);
+
+                int userInput = inputReader.ReadPlayerBet(bets.Count(), out bool isRemovingBet);
                 userInput--; // .ReadPlayerBet returns the unedited value. -1 for the accurate bet index.
                 //Check if player is done betting.
                 if (userInput < 0) {
@@ -42,21 +49,33 @@ namespace FancyBlackJack.Game
                 int _bet = bets[userInput];
 
                 if (isRemovingBet) {
+                    // If bet is bigger than the current betting pool, return betting pool and set it to 0.
+                    if (CurrentBet < _bet) {
+                        //player.Wallet += CurrentBet;
+                        player.AddMoney(CurrentBet);
+                        CurrentBet = 0;
+#if DEBUG
+                        Console.WriteLine($"C<B\twallet:{player.Wallet}\tbet:{CurrentBet}");
+#endif
+                        continue;
+
+                    }
                     if (CurrentBet >= _bet) {
-                        player.wallet += _bet;
+                        //player.Wallet += _bet;
+                        player.AddMoney(CurrentBet);
                         CurrentBet -= _bet;
 #if DEBUG
-                        Console.WriteLine($"wallet:{player.wallet}\tbet:{CurrentBet}");
+                        Console.WriteLine($"C>=B\twallet:{player.Wallet}\tbet:{CurrentBet}");
 #endif
+                        continue;
                     }
 
-                    continue;
                 }
 
                 if (player.AttemptBet(bets[userInput])) {
                     CurrentBet += bets[userInput];
 #if DEBUG
-                    Console.WriteLine($"wallet:{player.wallet}\tbet:{CurrentBet}");
+                    Console.WriteLine($"C>B\twallet:{player.Wallet}\tbet:{CurrentBet}");
 #endif
                 }
             }

@@ -11,8 +11,10 @@ namespace FancyBlackJack.Character
     {
         public BasePlayer() {
         }
-        //public PlayerActions GetInitialAction() {
 
-        //}
+
+        public override string ToString() {
+            return "BASEPLAYER";
+        }
     }
 }

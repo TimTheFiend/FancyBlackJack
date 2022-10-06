@@ -9,7 +9,20 @@ namespace FancyBlackJack.Game
         // Variables related to both dealer and player
         public BasePlayer player { get; private set; }
         List<Card> cards = new List<Card>();
-        public bool isActive { get; private set; } = true;
+        public bool isActive {
+            get {
+                return isActive;
+            }
+            private set {
+                if (isActive == false) {
+                    return;
+                }
+                isActive = value;
+#if DEBUG
+                Console.WriteLine();
+#endif
+            }
+        }
 
         #region Variables uniquely relevant to Player 
         public int size => cards.Count;
@@ -48,10 +61,11 @@ namespace FancyBlackJack.Game
                 return totalValue;
             }
         }
-        
+
         #region Constructors
         public Hand(BasePlayer player) {
             this.player = player;
+            isActive = true;
         }
 
         public Hand(Player player, int betAmount) : this(player) {

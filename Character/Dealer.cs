@@ -12,6 +12,8 @@ namespace FancyBlackJack.Character
         private readonly int minStandValue = 16;
 
 
-        
+        public override string ToString() {
+            return "DEALER";
+        }
     }
 }
