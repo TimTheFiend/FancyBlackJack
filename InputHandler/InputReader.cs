@@ -1,9 +1,5 @@
 ﻿using FancyBlackJack.Printing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FancyBlackJack.InputHandler
 {
@@ -23,19 +19,34 @@ namespace FancyBlackJack.InputHandler
             }
         }
 
-        public static void ModifierTest() {
+        public static int ReadPlayerBet(int maxValue, out bool isModified) {
+            isModified = false;
             while (true) {
-                var userInput = Console.ReadKey(true);
+                var userInputKey = Console.ReadKey(true);  //Is used to check if 
+                string userInput = userInputKey.Key.ToString();
 
-
-                Console.WriteLine(userInput.KeyChar);
-                Console.WriteLine(userInput.Key);
-                if (userInput.Modifiers == ConsoleModifiers.Shift) {
-                    Console.WriteLine(userInput.Modifiers.ToString());
+                if (int.TryParse(userInput[1..], out int inputResult)) {
+                    if (inputResult > 0 && inputResult <= maxValue) {
+                        isModified = userInputKey.Modifiers.HasFlag(ConsoleModifiers.Shift);
+                        return inputResult;
+                    }
                 }
+                // If player is done
+                if (userInputKey.Key is ConsoleKey.Enter) {
+                    return -1;  // BetManager only continues with positive integers.
+                }
+
+                CheckIfQuit(userInput);
             }
         }
 
+
+        private static void CheckIfQuit(string input) {
+            if (input.Length > 1) {
+                return;
+            }
+            CheckIfQuit(input.ToCharArray()[0]);
+        }
 
         //TODO
         private static void CheckIfQuit(char input) {

@@ -46,6 +46,14 @@ namespace FancyBlackJack.CardDeck
             }
         }
 
+        public Card DrawCard {
+            get {
+                Card card = cards[0];
+                cards.RemoveAt(0);
+                return card;
+            }
+        }
+
         private void ShuffleDeck() {
             Random rng = new Random();
 
@@ -55,6 +63,12 @@ namespace FancyBlackJack.CardDeck
                 cards[i] = cards[index];
                 cards[index] = temp;
             }
+        }
+
+        public static Deck GetDeck() {
+            var deck = new Deck();
+            deck.PrepareDeck();
+            return deck;
         }
 
         public void DebugCreateCustomDeck(params Card[] cardsToUse) {

@@ -9,10 +9,7 @@ namespace FancyBlackJack.Character
 {
     public class BasePlayer
     {
-        public Hand hand;
-
         public BasePlayer() {
-            hand = new Hand(this);
         }
         //public PlayerActions GetInitialAction() {
 

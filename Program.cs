@@ -3,16 +3,16 @@
 
 
 using FancyBlackJack.CardDeck;
+using FancyBlackJack.Character;
+using FancyBlackJack.Game;
 using FancyBlackJack.InputHandler;
 using FancyBlackJack.Printing;
 
 Console.WriteLine("Hello World");
 
+Player player = new Player();
 
-//InputReader.ModifierTest();
-
-List<string> test;
-
+BetManager.HandlePlayerBet(player);
 
 return;
 Card[] cards = new Card[] {
