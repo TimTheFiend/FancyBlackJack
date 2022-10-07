@@ -34,5 +34,9 @@ namespace FancyBlackJack.Character
 
             return actualBet;
         }
+
+        public override string ToString() {
+            return "PLAYER";
+        }
     }
 }

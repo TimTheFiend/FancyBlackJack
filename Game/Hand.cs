@@ -74,6 +74,13 @@ namespace FancyBlackJack.Game
         public void Stand() {
             isActive = false;
         }
+
+        public override string ToString() {
+            if (player is Player) {
+                return String.Format("Belongs to {0}\n\tWallet: ${1}\n\tBet: ${2}", player, ((Player)player).Wallet, betAmount);
+            }
+            return "DEALER's hand";
+        }
     }
 }
 
