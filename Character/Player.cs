@@ -8,14 +8,31 @@ namespace FancyBlackJack.Character
 {
     public class Player : BasePlayer
     {
-        public int wallet = 500;
 
-        public bool AttemptBet(int betAmount) {
-            if (wallet - betAmount >= 0) {
-                wallet -= betAmount;
-                return true;
-            }
-            return false;
+        public int Wallet { get; private set; } = 500;
+
+
+        //public bool AttemptBet(int betAmount) {
+        //    if (Wallet - betAmount >= 0) {
+        //        Wallet -= betAmount;
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        public int AttemptBet(int betAmount) {
+            int actualBet = betAmount <= Wallet ? betAmount : Wallet;
+            Wallet -= actualBet;
+
+            return actualBet;
+        }
+
+
+        public int AttemptReturnBet(int betAmount, int remainingBetPool) {
+            int actualBet = betAmount <= remainingBetPool ? betAmount : remainingBetPool;
+            Wallet += actualBet;
+
+            return actualBet;
         }
     }
 }

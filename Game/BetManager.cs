@@ -1,29 +1,29 @@
 ﻿using FancyBlackJack.Character;
 using FancyBlackJack.InputHandler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FancyBlackJack.Game
 {
     public static class BetManager
     {
+        private static readonly int _bet10 = 10;
+        private static readonly int _bet50 = _bet10 * 5;
+        private static readonly int _bet100 = _bet10 * 10;
+        private static readonly int _bet200 = _bet10 * 20;
+        private static readonly int _bet500 = _bet10 * 50;
+
         private static readonly int[] bets = new int[] {
-            10,
-            50,
-            100
+            _bet10,
+            _bet50,
+            _bet100,
+            _bet200,
+            _bet500
         };
-        private static readonly int lowBet = 10;
-        private static readonly int midBet = lowBet * 5;
-        private static readonly int highBet = lowBet * 10;
 
 
-        public static int CurrentBet { get; private set; } = 0;
-            
+        public static int CurrentBettingPool { get; private set; } = 0;
+
         public static void HandlePlayerBet(Player player) {
-            CurrentBet = 0;
+            CurrentBettingPool = 0;
 #if DEBUG
             DebugPrintInstructions();
 #endif
@@ -42,37 +42,28 @@ namespace FancyBlackJack.Game
                 int _bet = bets[userInput];
 
                 if (isRemovingBet) {
-                    if (CurrentBet >= _bet) {
-                        player.wallet += _bet;
-                        CurrentBet -= _bet;
+                    //Check if visual update is needed.
+                    CurrentBettingPool -= player.AttemptReturnBet(_bet, CurrentBettingPool);
 #if DEBUG
-                        Console.WriteLine($"wallet:{player.wallet}\tbet:{CurrentBet}");
+                        Console.WriteLine($"wallet:{player.Wallet}\tbet:{CurrentBettingPool}");
 #endif
-                    }
-
                     continue;
                 }
 
-                if (player.AttemptBet(bets[userInput])) {
-                    CurrentBet += bets[userInput];
+                CurrentBettingPool += player.AttemptBet(_bet);
 #if DEBUG
-                    Console.WriteLine($"wallet:{player.wallet}\tbet:{CurrentBet}");
+                Console.WriteLine($"wallet:{player.Wallet}\tbet:{CurrentBettingPool}");
 #endif
-                }
+
             }
         }
 
-        
+
 
         public static void DebugPrintInstructions() {
-            string[] msgs = new string[] {
-                $"1) ${lowBet}",
-                $"2) ${midBet}",
-                $"3) ${highBet}"
-            };
-
-            foreach (string msg in msgs) {
-                Console.WriteLine(msg);
+            for (int i = 0; i < bets.Length; i++) {
+                string print = $"{i + 1})\t${bets[i]}";
+                Console.WriteLine(print);
             }
         }
     }
